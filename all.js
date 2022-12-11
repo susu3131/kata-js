@@ -1,5 +1,3 @@
-console.log("test")
-
 // 資料
 const data = [
   {
@@ -12,30 +10,54 @@ const data = [
   }
 ];
 
+const addBtn = document.querySelector("#buttonByAdd")
+const inputText = document.querySelector("#inputByAdd")
+const dataList = document.querySelector(".list")
 
 
+function render(){
+  let str = "";
+  data.forEach(function(item){
+    str += `
+    <li>${item.content}<button class="delete" data-id="${item.id}">刪除</button></li>`
+  })
+  dataList.innerHTML = str ;
+
+  const deleteBtn = document.querySelectorAll(".delete")
+  deleteBtn.forEach(function(item){
+    item.addEventListener("click",function(e){
+      const id = e.target.dataset.id 
+      deleteData(id)
+    })
+  })
+}
 
 
-
-//新增按鈕
-const addInput = document.querySelector("#inputByAdd")  //選取input
-const  addButton = document.querySelector("#buttonByAdd") //選取按鈕
-addButton.addEventListener("click",function(){
-  addData(addInput.value)
-
-})
-
-
-function addData(content){
-  let num = data.length ;
+function add(text){
+  let num = data.length;
   num++;
   data.push({
-    id:data.length,
-    content
+    id:num,
+    content:text
   })
-  console.log(data)
+  console.log("成功新增",data);
+  render()
+}
+
+addBtn.addEventListener("click",function(e){
+  add(inputText.value)
+  inputText.value = ""
+})
+
+function deleteData(id){
+  const index = data.findIndex((item)=>item.id == id)
+  data.splice(index,1)
+  console.log("成功刪除",data);
+  render()
 }
 
 
 
+render()
+add("我是阿花")
 
